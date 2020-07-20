@@ -157,5 +157,14 @@ namespace MasterDetails.Controllers
             var produto = _context.Produtos.Find(produtoId);
             return Json(produto);
         }
+
+        [HttpPost]
+        public JsonResult RemoveProdutos(int index, IEnumerable<Detail> details)
+        {
+            var removeProdutoDetails = details.ToList();
+            removeProdutoDetails.RemoveAt(index);
+
+            return Json(removeProdutoDetails);
+        }
     }
 }

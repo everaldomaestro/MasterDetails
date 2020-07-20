@@ -10,18 +10,6 @@
             itens = Model.Details.Count();
         }
     }
-    //var dictionaryProdutos = new Dictionary<int, int>();
-
-    //if (Model != null)
-    //{
-    //    if (Model.Details != null)
-    //    {
-    //        for(int i = 0; i < Model.Details.Count(); i++)
-    //        {
-    //            dictionaryProdutos.Add(i, Model.Details[i].ProdutoId);
-    //        }
-    //    }
-    //}
 }
 
 <h1>Create</h1>
@@ -100,7 +88,7 @@
                     url: "@Url.Action("AppendProdutos")",
                     data: { produtoId },
                     success: function (produto) {
-                        table.append("<tr><td><input type='hidden' class='form-control produtosIds' id='Details["+ itens +"].ProdutoId' name='Details["+ itens +"].ProdutoId' value='"+ produto.produtoId +"' />" + produto.nome + "</td><td><button type='button' class='btn btn-danger btn-rm-produto'>Remover Produto</button></td></tr>");
+                        table.append("<tr id='tabela-produto-linha-" + itens + "'><td><input type='hidden' class='form-control produtosIds' id='Details[" + itens + "].ProdutoId' name='Details[" + itens + "].ProdutoId' value='" + produto.produtoId + "' />" + produto.nome + "</td><td><button type='button' class='btn btn-danger btn-rm-produto' onclick='removerProduto(" + itens + ")'>Remover Produto</button></td></tr>");
                         itens++;
                     }
                 })
@@ -108,6 +96,29 @@
             else {
                 alert('Selecione o produto');
             }
+        }
+
+        function removerProduto(index) {
+            var array = [];
+            $(".produtosIds").each(function () {
+                var detail = { DetailId: 0, MasterId: 0, ProdutoId : this.value };
+                array.push(detail);
+            });
+
+            var details = JSON.stringify({ 'details': array });
+
+            console.log(details);
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "@Url.Action("RemoveProdutos")",
+                data: { index, details},
+                success: function (details) {
+                    console.log(details);
+                }
+            })
         }
 
         $('.btn-adicionar-produto').on('click', adicionarProduto);
