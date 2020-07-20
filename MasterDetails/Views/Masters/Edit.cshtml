@@ -2,6 +2,15 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var itens = 0;
+    var masterId = Model.MasterId;
+    if (Model != null)
+    {
+        if (Model.Details != null)
+        {
+            itens = Model.Details.Count();
+        }
+    }
 }
 
 <h1>Edit</h1>
@@ -11,50 +20,8 @@
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="MasterId" />
-    <div class="form-group">
-        <label asp-for="Data" class="control-label"></label>
-        <input asp-for="Data" class="form-control" />
-        <span asp-validation-for="Data" class="text-danger"></span>
-    </div>
-    <div class="row">
-        <div class="form-group col-12 col-md-6 align-self-start">
-            <label for="ProdutoId">Produto</label>
-            <select class="form-control" id="ProdutoId" asp-items="ViewBag.Produtos">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group col-12 col-md-6 align-self-end">
-            <button type="button" class="btn btn-secondary btn-adicionar-produto float-md-right">Adicionar Produto</button>
-        </div>
-        <span asp-validation-for="Details" class="text-danger ml-3"></span>
-    </div>
-    <br />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="table-produto">
-            @if (Model != null)
-            {
-                if (Model.Details != null)
-                {
-                    @for (int i = 0; i < Model.Details.Count(); i++)
-                    {
-                        <tr>
-                            <td>
-                                <input type="hidden" asp-for="Details[i].ProdutoId" class="form-control produtosIds" />
-                                @Model.Details[i].Produto.Nome
-                            </td>
-                            <td></td>
-                        </tr>
-                    }
-                }
-            }
-        </tbody>
-    </table>
+
+    <partial name="_FormMaster" />
 
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
@@ -67,4 +34,9 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+        var itens = @itens;
+        var masterId = @masterId;
+</script>
+    <script src="~/js/masterdetails.js"></script>
 }

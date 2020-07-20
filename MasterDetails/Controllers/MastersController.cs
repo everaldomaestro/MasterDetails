@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MasterDetails.Controllers
@@ -75,11 +76,13 @@ namespace MasterDetails.Controllers
                 return NotFound();
             }
 
-            var master = await _context.Masters.Include(x => x.Details).ThenInclude(x=>x.Produto).FirstOrDefaultAsync(x => x.MasterId == id);
+            var master = await _context.Masters.Include(x => x.Details).ThenInclude(x => x.Produto).FirstOrDefaultAsync(x => x.MasterId == id);
             if (master == null)
             {
                 return NotFound();
             }
+
+            ViewData["Produtos"] = new SelectList(_context.Produtos, "ProdutoId", "Nome");
             return View(master);
         }
 
@@ -88,18 +91,15 @@ namespace MasterDetails.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MasterId,Data")] Master master)
+        public async Task<IActionResult> Edit(Master master)
         {
-            if (id != master.MasterId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(master);
+                    _context.Details.RemoveRange(_context.Details.Where(x => x.MasterId == master.MasterId));
+                    _context.Masters.Update(master);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -115,6 +115,8 @@ namespace MasterDetails.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Produtos"] = new SelectList(_context.Produtos, "ProdutoId", "Nome");
             return View(master);
         }
 
@@ -159,12 +161,26 @@ namespace MasterDetails.Controllers
         }
 
         [HttpPost]
-        public JsonResult RemoveProdutos(int index, IEnumerable<Detail> details)
+        public JsonResult RemoveProdutos(JsonRemoverProduto json)
         {
-            var removeProdutoDetails = details.ToList();
-            removeProdutoDetails.RemoveAt(index);
-
-            return Json(removeProdutoDetails);
+            json.Details.RemoveAt(json.Index);
+            return Json(json);
         }
+    }
+
+    public class JsonRemoverProduto
+    {
+        public int Index { get; set; }
+        public List<DetailViewModel> Details { get; set; }
+    }
+
+    public class DetailViewModel
+    {
+
+        public int DetailId { get; set; }
+        public int MasterId { get; set; }
+        public int ProdutoId { get; set; }
+        public string NomeProduto { get; set; }
+        public string Qtd { get; set; }
     }
 }
