@@ -1,15 +1,11 @@
-﻿let table = $("#table-produto");
+﻿$(function () {
+    addEventListenerAddDetail();
+    addEventListenerRemoveDetail();
+})
 
-$('.btn-adicionar-produto').on('click', function () {
-    adicionarProduto();
-});
+let table = $("#table-produto");
 
-limparInputs = () => {
-    $('#ProdutoId').val('');
-    $('#Qtd').val('');
-    $('#ProdutoId').focus();
-}
-
+//Ações Primárias
 adicionarProduto = () => {
     var produtoId = $('#ProdutoId').val();
     var qtd = $('#Qtd').val();
@@ -34,7 +30,9 @@ adicionarProduto = () => {
     limparInputs();
 }
 
-removerProduto = (index) => {
+removerProduto = (e) => {
+    var index = e.value;
+
     details.splice(index, 1);
     table.empty();
     countItens = 0;
@@ -44,12 +42,37 @@ removerProduto = (index) => {
         countItens++;
     });
 
-    limparInputs();
+    limparInputs();    
+}
+
+//Eventos
+addEventListenerAddDetail = () => {
+    var btnAddProduto = document.getElementsByClassName('btn-add-produto');
+    btnAddProduto[0].addEventListener('click', function () {
+        adicionarProduto();
+    });
+}
+
+addEventListenerRemoveDetail = () => {
+    var btnRemoverProduto = document.getElementsByClassName('btn-rm-produto');
+
+    for (var i = 0; i < btnRemoverProduto.length; i++) {
+        btnRemoverProduto[i].addEventListener('click', function () {
+            removerProduto(this);
+        });
+    }
+}
+
+//Ações Auxiliar
+limparInputs = () => {
+    $('#ProdutoId').val('');
+    $('#Qtd').val('');
+    $('#ProdutoId').focus();
 }
 
 appendTable = (i, detail) => {    
     var row = "<tr><td>" + detail.nome + "</td><td>" + detail.quantidade + "</td><td>"+
-        "<button type='button' class='btn btn-danger btn-rm-produto' onclick='removerProduto(" + i + ")'>Remover Produto</button>" +
+        "<button type='button' class='btn btn-danger btn-rm-produto' value='"+ i +"'>Remover Produto</button>" +
         "<input type='hidden' name='Details[" + i + "].DetailId' value='" + detail.detailId +"' />" +
         "<input type='hidden' name='Details[" + i + "].MasterId' value='" + detail.masterId +"' />" +
         "<input type='hidden' name='Details[" + i + "].ProdutoId' value='" + detail.produtoId + "' />" +
@@ -57,4 +80,8 @@ appendTable = (i, detail) => {
         "</td></tr>";
 
     table.append(row);
+
+    document.getElementsByClassName('btn-rm-produto')[i].addEventListener('click', function () {
+        removerProduto(this);
+    });
 }
