@@ -11,6 +11,8 @@
             itens = Model.Details.Count();
         }
     }
+
+    var details = Json.Serialize(Model.Details.Select(s => new { DetailId = s.DetailId, MasterId = s.MasterId, ProdutoId = s.ProdutoId, Nome = s.Produto.Nome, Quantidade = s.Qtd }).ToArray());
 }
 
 <h1>Edit</h1>
@@ -34,9 +36,10 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-        var itens = @itens;
-        var masterId = @masterId;
-</script>
+    <script>
+        const _masterId = @masterId;
+        let countItens = @itens;
+        let details = @details;
+    </script>
     <script src="~/js/masterdetails.js"></script>
 }

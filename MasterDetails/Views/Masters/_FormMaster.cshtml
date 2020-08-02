@@ -40,17 +40,17 @@
                 {
                     <tr class="tabela-produto-linhas">
                         <td class="nomeProduto">
-                            <input type="hidden" asp-for="Details[i].DetailId" class="form-control detailId" />
-                            <input type="hidden" asp-for="Details[i].MasterId" class="form-control masterId" />
-                            <input type="hidden" asp-for="Details[i].ProdutoId" class="form-control produtoId" />
                             @Model.Details[i].Produto.Nome
                         </td>
                         <td class="qtdProduto">
-                            <input type="hidden" asp-for="Details[i].Qtd" class="form-control qtdProduto" />
                             @Model.Details[i].Qtd
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger btn-rm-produto" onclick="removerProduto(@i)">Remover Produto</button>
+                            <input type="hidden" asp-for="Details[i].DetailId" />
+                            <input type="hidden" asp-for="Details[i].MasterId" />
+                            <input type="hidden" asp-for="Details[i].ProdutoId" />
+                            <input type="hidden" asp-for="Details[i].Qtd" />
                         </td>
                     </tr>
                 }

@@ -3,7 +3,6 @@ using MasterDetails.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -158,28 +157,5 @@ namespace MasterDetails.Controllers
             var produto = _context.Produtos.Find(produtoId);
             return Json(produto);
         }
-
-        [HttpPost]
-        public JsonResult RemoveProdutos(JsonRemoverProduto json)
-        {
-            json.Details.RemoveAt(json.Index);
-            return Json(json);
-        }
-    }
-
-    public class JsonRemoverProduto
-    {
-        public int Index { get; set; }
-        public List<DetailViewModel> Details { get; set; }
-    }
-
-    public class DetailViewModel
-    {
-
-        public int DetailId { get; set; }
-        public int MasterId { get; set; }
-        public int ProdutoId { get; set; }
-        public string NomeProduto { get; set; }
-        public string Qtd { get; set; }
     }
 }
