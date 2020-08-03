@@ -13,8 +13,6 @@ adicionarProduto = () => {
     var produtoId = $('#ProdutoId').val();
     var qtd = $('#Qtd').val();
 
-    console.log(index);
-
     if (produtoId != null && produtoId > 0 && qtd != null && qtd > 0) {
         $.ajax({
             url: "/Masters/AppendProdutos",
@@ -23,7 +21,6 @@ adicionarProduto = () => {
                 if (index != null && index != '' && index >= 0) {
                     let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd };
                     details.splice(index, 1);
-                    console.log(details);
                     details.splice(index, 0, detail);
 
                     table.empty();
