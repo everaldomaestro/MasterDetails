@@ -106,7 +106,7 @@ addEventListenerEditDetail = () => {
     }
 }
 
-//Ações Auxiliar
+//Auxiliar
 limparInputs = () => {
     $('#Index').val('');
     $('#DetailId').val('');
