@@ -7,11 +7,6 @@ namespace MasterDetails.Models
     [Table(nameof(Produto))]
     public class Produto
     {
-        public Produto()
-        {
-            Precos = new List<PrecoProduto>();
-        }
-
         //PROP
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column(nameof(ProdutoId))]
         public int ProdutoId { get; set; }
@@ -19,8 +14,13 @@ namespace MasterDetails.Models
         [Required(ErrorMessage = "Campo obrigatório"), Column(nameof(Nome), TypeName = ("varchar(25)")), StringLength(25)]
         public string Nome { get; set; }
 
+        [Required(ErrorMessage = "Campo obrigatório"), Display(Name = "Preço"), NotMapped]
+        public string PrecoFormatado { get; set; }
+
+        [Required, Column(nameof(Preco), TypeName = ("decimal(5,2)"))]
+        public decimal Preco { get; private set; }
+
         //NAV
         public IEnumerable<Detail> Details { get; set; }
-        public IList<PrecoProduto> Precos { get; set; }
     }
 }

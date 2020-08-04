@@ -19,7 +19,10 @@ namespace MasterDetails.Models
         [Required(ErrorMessage = "Campo obrigatório"), Column(nameof(Qtd)), Display(Name = "Quantidade")]
         public string Qtd { get; set; }
 
-        [Required(ErrorMessage = "Campo obrigatório"), Column(nameof(Preco), TypeName = ("decimal(5,2)")), Display(Name = "Preço")]
+        [Required(ErrorMessage = "Campo obrigatório"), Display(Name = "Preço"), NotMapped]
+        public string PrecoFormatado { get; set; }
+
+        [Required, Column(nameof(Preco), TypeName = ("decimal(5,2)"))]
         public decimal Preco { get; set; }
 
         //NAV

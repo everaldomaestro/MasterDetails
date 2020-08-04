@@ -164,29 +164,6 @@ namespace MasterDetails.Controllers
                     .AsNoTracking()
                     .FirstOrDefault(x => x.ProdutoId == produtoId);
 
-            var preco =
-                _context.PrecosProdutos
-                    .Where(x => x.ProdutoId == produtoId)
-                    .Where(x => x.InicioValidade <= DateTime.Now && x.FinalValidade.HasValue && x.FinalValidade >= DateTime.Now)
-                    .OrderBy(x => x.Preco)
-                    .FirstOrDefault();
-
-            if (preco != null)
-            {
-                produto.Precos.Add(preco);
-            }
-            else
-            {
-                preco =
-                    _context.PrecosProdutos
-                        .Where(x => x.ProdutoId == produtoId)
-                        .Where(x => x.InicioValidade <= DateTime.Now && !x.FinalValidade.HasValue)
-                        .OrderByDescending(x => x.PrecoProdutoId)
-                        .FirstOrDefault();
-
-                produto.Precos.Add(preco);
-            }
-
             return Json(produto);
         }
     }

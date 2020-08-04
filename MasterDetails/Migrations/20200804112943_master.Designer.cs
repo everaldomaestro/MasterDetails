@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MasterDetails.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200804003430_Master")]
-    partial class Master
+    [Migration("20200804112943_master")]
+    partial class master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,37 +97,6 @@ namespace MasterDetails.Migrations
                     b.ToTable("Master");
                 });
 
-            modelBuilder.Entity("MasterDetails.Models.PrecoProduto", b =>
-                {
-                    b.Property<int>("PrecoProdutoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("PrecoProdutoId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("FinalValidade")
-                        .HasColumnName("FinalValidade")
-                        .HasColumnType("smalldatetime");
-
-                    b.Property<DateTime>("InicioValidade")
-                        .HasColumnName("InicioValidade")
-                        .HasColumnType("smalldatetime");
-
-                    b.Property<decimal>("Preco")
-                        .HasColumnName("Preco")
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnName("ProdutoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PrecoProdutoId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("PrecoProduto");
-                });
-
             modelBuilder.Entity("MasterDetails.Models.Produto", b =>
                 {
                     b.Property<int>("ProdutoId")
@@ -141,6 +110,10 @@ namespace MasterDetails.Migrations
                         .HasColumnName("Nome")
                         .HasColumnType("varchar(25)")
                         .HasMaxLength(25);
+
+                    b.Property<decimal>("Preco")
+                        .HasColumnName("Preco")
+                        .HasColumnType("decimal(5,2)");
 
                     b.HasKey("ProdutoId");
 
@@ -167,15 +140,6 @@ namespace MasterDetails.Migrations
                     b.HasOne("MasterDetails.Models.Cliente", "Cliente")
                         .WithMany("Masters")
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MasterDetails.Models.PrecoProduto", b =>
-                {
-                    b.HasOne("MasterDetails.Models.Produto", "Produto")
-                        .WithMany("Precos")
-                        .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

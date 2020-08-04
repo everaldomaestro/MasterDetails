@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MasterDetails.Migrations
 {
-    public partial class Master : Migration
+    public partial class master : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,8 @@ namespace MasterDetails.Migrations
                 {
                     ProdutoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false)
+                    Nome = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false),
+                    Preco = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,28 +51,6 @@ namespace MasterDetails.Migrations
                         column: x => x.ClienteId,
                         principalTable: "Cliente",
                         principalColumn: "ClienteId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PrecoProduto",
-                columns: table => new
-                {
-                    PrecoProdutoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProdutoId = table.Column<int>(nullable: false),
-                    Preco = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    InicioValidade = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    FinalValidade = table.Column<DateTime>(type: "smalldatetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PrecoProduto", x => x.PrecoProdutoId);
-                    table.ForeignKey(
-                        name: "FK_PrecoProduto_Produto_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "Produto",
-                        principalColumn: "ProdutoId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -117,20 +96,12 @@ namespace MasterDetails.Migrations
                 name: "IX_Master_ClienteId",
                 table: "Master",
                 column: "ClienteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrecoProduto_ProdutoId",
-                table: "PrecoProduto",
-                column: "ProdutoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Detail");
-
-            migrationBuilder.DropTable(
-                name: "PrecoProduto");
 
             migrationBuilder.DropTable(
                 name: "Master");

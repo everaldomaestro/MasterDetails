@@ -1,9 +1,12 @@
-﻿using MasterDetails.Data;
-using MasterDetails.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MasterDetails.Data;
+using MasterDetails.Models;
 
 namespace MasterDetails.Controllers
 {
@@ -47,11 +50,11 @@ namespace MasterDetails.Controllers
         }
 
         // POST: Produtos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProdutoId,Nome")] Produto produto)
+        public async Task<IActionResult> Create([Bind("ProdutoId,Nome,Preco")] Produto produto)
         {
             if (ModelState.IsValid)
             {
@@ -79,11 +82,11 @@ namespace MasterDetails.Controllers
         }
 
         // POST: Produtos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProdutoId,Nome")] Produto produto)
+        public async Task<IActionResult> Edit(int id, [Bind("ProdutoId,Nome,Preco")] Produto produto)
         {
             if (id != produto.ProdutoId)
             {
