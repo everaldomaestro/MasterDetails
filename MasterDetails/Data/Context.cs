@@ -12,5 +12,7 @@ namespace MasterDetails.Data
         public DbSet<Master> Masters { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<Produto> Produtos { get; set; }
+        public DbSet<PrecoProduto> PrecosProdutos { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
     }
 }

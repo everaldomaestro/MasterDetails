@@ -3,6 +3,7 @@ using MasterDetails.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +45,7 @@ namespace MasterDetails.Controllers
         // GET: Masters/Create
         public IActionResult Create()
         {
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             ViewData["Produtos"] = new SelectList(_context.Produtos, "ProdutoId", "Nome");
             return View();
         }
@@ -62,6 +64,7 @@ namespace MasterDetails.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             ViewData["Produtos"] = new SelectList(_context.Produtos, "ProdutoId", "Nome");
             return View(master);
         }
@@ -80,6 +83,7 @@ namespace MasterDetails.Controllers
                 return NotFound();
             }
 
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             ViewData["Produtos"] = new SelectList(_context.Produtos, "ProdutoId", "Nome");
             return View(master);
         }
@@ -114,6 +118,7 @@ namespace MasterDetails.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             ViewData["Produtos"] = new SelectList(_context.Produtos, "ProdutoId", "Nome");
             return View(master);
         }
@@ -154,7 +159,34 @@ namespace MasterDetails.Controllers
 
         public JsonResult AppendProdutos(int produtoId)
         {
-            var produto = _context.Produtos.Find(produtoId);
+            var produto =
+                _context.Produtos
+                    .AsNoTracking()
+                    .FirstOrDefault(x => x.ProdutoId == produtoId);
+
+            var preco =
+                _context.PrecosProdutos
+                    .Where(x => x.ProdutoId == produtoId)
+                    .Where(x => x.InicioValidade <= DateTime.Now && x.FinalValidade.HasValue && x.FinalValidade >= DateTime.Now)
+                    .OrderBy(x => x.Preco)
+                    .FirstOrDefault();
+
+            if (preco != null)
+            {
+                produto.Precos.Add(preco);
+            }
+            else
+            {
+                preco =
+                    _context.PrecosProdutos
+                        .Where(x => x.ProdutoId == produtoId)
+                        .Where(x => x.InicioValidade <= DateTime.Now && !x.FinalValidade.HasValue)
+                        .OrderByDescending(x => x.PrecoProdutoId)
+                        .FirstOrDefault();
+
+                produto.Precos.Add(preco);
+            }
+
             return Json(produto);
         }
     }

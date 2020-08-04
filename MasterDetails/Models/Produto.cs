@@ -7,6 +7,11 @@ namespace MasterDetails.Models
     [Table(nameof(Produto))]
     public class Produto
     {
+        public Produto()
+        {
+            Precos = new List<PrecoProduto>();
+        }
+
         //PROP
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column(nameof(ProdutoId))]
         public int ProdutoId { get; set; }
@@ -16,6 +21,6 @@ namespace MasterDetails.Models
 
         //NAV
         public IEnumerable<Detail> Details { get; set; }
-        public IEnumerable<PrecoProduto> Precos { get; set; }
+        public IList<PrecoProduto> Precos { get; set; }
     }
 }

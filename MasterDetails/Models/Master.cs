@@ -20,7 +20,7 @@ namespace MasterDetails.Models
 
         //NAV
         [Required(ErrorMessage = "Campo obrigatório")]
-        public IEnumerable<Detail> Details { get; set; }
+        public List<Detail> Details { get; set; }
 
         [ForeignKey(nameof(ClienteId))]
         public Cliente Cliente { get; set; }

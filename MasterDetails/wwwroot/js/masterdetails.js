@@ -18,6 +18,8 @@ adicionarProduto = () => {
             url: "/Masters/AppendProdutos",
             data: { produtoId },
             success: function (produto) {
+                console.log(produto);
+
                 if (index != null && index != '' && index >= 0) {
                     let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd };
                     details.splice(index, 1);
