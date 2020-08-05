@@ -164,6 +164,8 @@ namespace MasterDetails.Controllers
                     .AsNoTracking()
                     .FirstOrDefault(x => x.ProdutoId == produtoId);
 
+            produto.ObterPrecoFormatado();
+
             return Json(produto);
         }
     }

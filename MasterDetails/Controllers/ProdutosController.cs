@@ -54,8 +54,11 @@ namespace MasterDetails.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProdutoId,Nome,Preco")] Produto produto)
+        public async Task<IActionResult> Create(Produto produto)
         {
+            if(!string.IsNullOrEmpty(produto.PrecoFormatado))
+                produto.DefinirPrecoFormatado();
+
             if (ModelState.IsValid)
             {
                 _context.Add(produto);
@@ -78,6 +81,9 @@ namespace MasterDetails.Controllers
             {
                 return NotFound();
             }
+
+            produto.ObterPrecoFormatado();
+
             return View(produto);
         }
 
@@ -86,12 +92,15 @@ namespace MasterDetails.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProdutoId,Nome,Preco")] Produto produto)
+        public async Task<IActionResult> Edit(int id, Produto produto)
         {
             if (id != produto.ProdutoId)
             {
                 return NotFound();
             }
+
+            if (!string.IsNullOrEmpty(produto.PrecoFormatado))
+                produto.DefinirPrecoFormatado();
 
             if (ModelState.IsValid)
             {

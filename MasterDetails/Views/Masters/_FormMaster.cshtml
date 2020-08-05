@@ -11,6 +11,7 @@
         <select class="form-control" asp-for="ClienteId" asp-items="ViewBag.Clientes">
             <option value=""></option>
         </select>
+        <span asp-validation-for="ClienteId" class="text-danger"></span>
     </div>
 </div>
 <div class="row">

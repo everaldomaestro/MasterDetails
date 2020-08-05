@@ -21,6 +21,7 @@ adicionarProduto = () => {
                 console.log(produto);
 
                 if (index != null && index != '' && index >= 0) {
+                    //Editar
                     let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd };
                     details.splice(index, 1);
                     details.splice(index, 0, detail);
@@ -36,7 +37,8 @@ adicionarProduto = () => {
                     $('.btn-add-produto').text('Adicionar Produto');
 
                 } else {
-                    let detail = { detailId: 0, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd };
+                    //Adicionar
+                    let detail = { detailId: 0, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado};
                     details.push(detail);
                     appendTable(countItens, detail);
                     countItens++;
@@ -48,6 +50,7 @@ adicionarProduto = () => {
         alert('Selecione o produto');
     }
 
+    console.log(details);
     limparInputs();
 }
 

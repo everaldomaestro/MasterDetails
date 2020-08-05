@@ -17,10 +17,21 @@ namespace MasterDetails.Models
         [Required(ErrorMessage = "Campo obrigatório"), Display(Name = "Preço"), NotMapped]
         public string PrecoFormatado { get; set; }
 
-        [Required, Column(nameof(Preco), TypeName = ("decimal(5,2)"))]
+        [Required, Column(nameof(Preco), TypeName = ("decimal(5,2)")), Display(Name = "Preço")]
         public decimal Preco { get; private set; }
 
         //NAV
         public IEnumerable<Detail> Details { get; set; }
+
+        //ACTION
+        public void DefinirPrecoFormatado()
+        {
+            Preco = decimal.Parse(PrecoFormatado);
+        }
+
+        public void ObterPrecoFormatado()
+        {
+            PrecoFormatado = Preco.ToString();
+        }
     }
 }

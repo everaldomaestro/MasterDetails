@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrecoFormatado)
+                @Html.DisplayNameFor(model => model.Preco)
             </th>
             <th></th>
         </tr>
@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PrecoFormatado)
+                @item.Preco.ToString("C2")
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProdutoId">Edit</a> |
