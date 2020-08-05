@@ -38,6 +38,7 @@
         <tr>
             <th>Produto</th>
             <th>Qtd</th>
+            <th>Preço</th>
             <th></th>
         </tr>
     </thead>
@@ -55,6 +56,9 @@
                         <td class="qtdProduto">
                             @Model.Details[i].Qtd
                         </td>
+                        <td class="qtdProduto">
+                            @Model.Details[i].Preco.ToString("C2")
+                        </td>
                         <td>
                             <button type="button" class="btn btn-danger btn-rm-produto" value="@i">Remover Produto</button>
                             <button type="button" class="btn btn-primary btn-edit-produto" value="@i">Editar Produto</button>
@@ -62,6 +66,7 @@
                             <input type="hidden" asp-for="Details[i].MasterId" />
                             <input type="hidden" asp-for="Details[i].ProdutoId" />
                             <input type="hidden" asp-for="Details[i].Qtd" />
+                            <input type="hidden" asp-for="Details[i].Preco" />
                         </td>
                     </tr>
                 }

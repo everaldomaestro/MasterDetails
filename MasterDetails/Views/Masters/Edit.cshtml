@@ -12,7 +12,7 @@
         }
     }
 
-    var details = Json.Serialize(Model.Details.Select(s => new { DetailId = s.DetailId, MasterId = s.MasterId, ProdutoId = s.ProdutoId, Nome = s.Produto.Nome, Quantidade = s.Qtd }).ToArray());
+    var details = Json.Serialize(Model.Details.Select(s => new { DetailId = s.DetailId, MasterId = s.MasterId, ProdutoId = s.ProdutoId, Nome = s.Produto.Nome, Quantidade = s.Qtd, Preco = s.Preco.ToString().Replace(".",",") }).ToArray());
 }
 
 <h1>Edit</h1>

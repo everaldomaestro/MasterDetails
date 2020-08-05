@@ -22,7 +22,7 @@ adicionarProduto = () => {
 
                 if (index != null && index != '' && index >= 0) {
                     //Editar
-                    let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd };
+                    let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado };
                     details.splice(index, 1);
                     details.splice(index, 0, detail);
 
@@ -121,13 +121,14 @@ limparInputs = () => {
 }
 
 appendTable = (i, detail) => {
-    var row = "<tr><td>" + detail.nome + "</td><td>" + detail.quantidade + "</td><td>" +
+    var row = "<tr><td>" + detail.nome + "</td><td>" + detail.quantidade + "</td><td>R$ " + detail.preco + "</td><td>" +
         "<button type='button' class='btn btn-danger btn-rm-produto' value='" + i + "'>Remover Produto</button>" +
         "<button type='button' class='ml-1 btn btn-primary btn-edit-produto' value='" + i +"'>Editar Produto</button>" +
         "<input type='hidden' name='Details[" + i + "].DetailId' value='" + detail.detailId + "' />" +
         "<input type='hidden' name='Details[" + i + "].MasterId' value='" + detail.masterId + "' />" +
         "<input type='hidden' name='Details[" + i + "].ProdutoId' value='" + detail.produtoId + "' />" +
         "<input type='hidden' name='Details[" + i + "].Qtd' value='" + detail.quantidade + "' />" +
+        "<input type='hidden' name='Details[" + i + "].Preco' value='" + detail.preco + "' />" +
         "</td></tr>";
 
     table.append(row);
