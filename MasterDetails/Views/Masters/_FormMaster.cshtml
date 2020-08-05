@@ -39,6 +39,7 @@
             <th>Produto</th>
             <th>Qtd</th>
             <th>Preço</th>
+            <th>Total</th>
             <th></th>
         </tr>
     </thead>
@@ -50,14 +51,20 @@
                 @for (int i = 0; i < Model.Details.Count(); i++)
                 {
                     <tr>
-                        <td class="nomeProduto">
+                        <td>
                             @Model.Details[i].Produto.Nome
                         </td>
-                        <td class="qtdProduto">
+                        <td>
                             @Model.Details[i].Qtd
                         </td>
-                        <td class="qtdProduto">
+                        <td>
                             @Model.Details[i].Preco.ToString("C2")
+                        </td>
+                        <td>
+                            @{ 
+                                var total = decimal.Parse(Model.Details[i].Qtd) * Model.Details[i].Preco;
+                            }
+                            @total.ToString("C2")
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger btn-rm-produto" value="@i">Remover Produto</button>
@@ -74,3 +81,6 @@
         }
     </tbody>
 </table>
+<p>
+    <b>Total: </b>R$ <span id="total"></span>
+</p>

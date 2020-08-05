@@ -12,7 +12,7 @@
         }
     }
 
-    var details = Json.Serialize(Model.Details.Select(s => new { DetailId = s.DetailId, MasterId = s.MasterId, ProdutoId = s.ProdutoId, Nome = s.Produto.Nome, Quantidade = s.Qtd, Preco = s.Preco.ToString().Replace(".",",") }).ToArray());
+    var details = Json.Serialize(Model.Details.Select(s => new { DetailId = s.DetailId, MasterId = s.MasterId, ProdutoId = s.ProdutoId, Nome = s.Produto.Nome, Quantidade = s.Qtd, Preco = s.Preco.ToString().Replace(".",","), Total = decimal.Parse(s.Qtd) * s.Preco}).ToArray());
 }
 
 <h1>Edit</h1>
@@ -38,8 +38,8 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         const _masterId = @masterId;
-        let countItens = @itens;
-        let details = @details;
+        var countItens = @itens;
+        var details = @details;
     </script>
     <script src="~/js/masterdetails.js"></script>
 }

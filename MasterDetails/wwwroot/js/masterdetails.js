@@ -2,9 +2,10 @@
     addEventListenerAddDetail();
     addEventListenerRemoveDetail();
     addEventListenerEditDetail();
+    totalDetails();
 })
 
-let table = $("#table-produto");
+const table = $("#table-produto");
 
 //Ações Primárias
 adicionarProduto = () => {
@@ -18,11 +19,10 @@ adicionarProduto = () => {
             url: "/Masters/AppendProdutos",
             data: { produtoId },
             success: function (produto) {
-                console.log(produto);
 
                 if (index != null && index != '' && index >= 0) {
                     //Editar
-                    let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado };
+                    let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado, total: (produto.preco * qtd) };
                     details.splice(index, 1);
                     details.splice(index, 0, detail);
 
@@ -38,7 +38,7 @@ adicionarProduto = () => {
 
                 } else {
                     //Adicionar
-                    let detail = { detailId: 0, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado};
+                    let detail = { detailId: 0, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado, total: (produto.preco * qtd) };
                     details.push(detail);
                     appendTable(countItens, detail);
                     countItens++;
@@ -50,8 +50,11 @@ adicionarProduto = () => {
         alert('Selecione o produto');
     }
 
-    console.log(details);
     limparInputs();
+
+    setTimeout(function () {
+        totalDetails();
+    }, 100);
 }
 
 removerProduto = (e) => {
@@ -67,6 +70,7 @@ removerProduto = (e) => {
     });
 
     limparInputs();
+    totalDetails();
 }
 
 editarProduto = (e) => {
@@ -121,9 +125,9 @@ limparInputs = () => {
 }
 
 appendTable = (i, detail) => {
-    var row = "<tr><td>" + detail.nome + "</td><td>" + detail.quantidade + "</td><td>R$ " + detail.preco + "</td><td>" +
+    var row = "<tr><td>" + detail.nome + "</td><td>" + detail.quantidade + "</td><td>R$ " + detail.preco + "</td><td>R$ " + formatarMoeda(detail.total) + "</td><td>" +
         "<button type='button' class='btn btn-danger btn-rm-produto' value='" + i + "'>Remover Produto</button>" +
-        "<button type='button' class='ml-1 btn btn-primary btn-edit-produto' value='" + i +"'>Editar Produto</button>" +
+        "<button type='button' class='ml-1 btn btn-primary btn-edit-produto' value='" + i + "'>Editar Produto</button>" +
         "<input type='hidden' name='Details[" + i + "].DetailId' value='" + detail.detailId + "' />" +
         "<input type='hidden' name='Details[" + i + "].MasterId' value='" + detail.masterId + "' />" +
         "<input type='hidden' name='Details[" + i + "].ProdutoId' value='" + detail.produtoId + "' />" +
@@ -140,4 +144,20 @@ appendTable = (i, detail) => {
     document.getElementsByClassName('btn-edit-produto')[i].addEventListener('click', function () {
         editarProduto(this);
     });
+}
+
+formatarMoeda = (num) => {
+    return num.toFixed(2).replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+}
+
+totalDetails = () => {
+    const totalDetails = $('#total');
+
+    var total = 0.0;
+
+    for (var i = 0; i < details.length; i++) {
+        total += details[i].total;
+    }
+
+    totalDetails.text(formatarMoeda(total));
 }
