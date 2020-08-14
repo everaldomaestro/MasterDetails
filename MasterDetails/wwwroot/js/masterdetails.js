@@ -121,23 +121,55 @@ limparInputs = () => {
 }
 
 appendTable = (i, detail) => {
-    var row = "<tr><td>" + detail.nome + "</td><td>" + detail.quantidade + "</td><td>R$ " + detail.preco + "</td><td>" +
-        "<button type='button' class='btn btn-danger btn-rm-produto' value='" + i + "'>Remover Produto</button>" +
-        "<button type='button' class='ml-1 btn btn-primary btn-edit-produto' value='" + i +"'>Editar Produto</button>" +
-        "<input type='hidden' name='Details[" + i + "].DetailId' value='" + detail.detailId + "' />" +
-        "<input type='hidden' name='Details[" + i + "].MasterId' value='" + detail.masterId + "' />" +
-        "<input type='hidden' name='Details[" + i + "].ProdutoId' value='" + detail.produtoId + "' />" +
-        "<input type='hidden' name='Details[" + i + "].Qtd' value='" + detail.quantidade + "' />" +
-        "<input type='hidden' name='Details[" + i + "].Preco' value='" + detail.preco + "' />" +
-        "</td></tr>";
+    var iptDetailId = document.createElement("input");
+    iptDetailId.setAttribute("type", "hidden");
+    iptDetailId.value = detail.detailId;
+    iptDetailId.setAttribute("name", "Details[" + i + "].DetailId");
 
-    table.append(row);
+    var iptMasterId = document.createElement("input");
+    iptMasterId.setAttribute("type", "hidden");
+    iptMasterId.value = detail.masterId;
+    iptMasterId.setAttribute("name", "Details[" + i + "].MasterId");
 
-    document.getElementsByClassName('btn-rm-produto')[i].addEventListener('click', function () {
+    var iptProdutoId = document.createElement("input");
+    iptProdutoId.setAttribute("type", "hidden");
+    iptProdutoId.value = detail.produtoId;
+    iptProdutoId.setAttribute("name", "Details[" + i + "].ProdutoId");
+
+    var iptQtd = document.createElement("input");
+    iptQtd.setAttribute("type", "hidden");
+    iptQtd.value = detail.quantidade;
+    iptQtd.setAttribute("name", "Details[" + i + "].Qtd");
+
+    var iptPreco = document.createElement("input");
+    iptPreco.setAttribute("type", "hidden");
+    iptPreco.value = detail.preco;
+    iptPreco.setAttribute("name", "Details[" + i + "].Preco");
+
+    var btnRemover = document.createElement("button");
+    btnRemover.setAttribute("class", "btn btn-danger btn-rm-produto");
+    btnRemover.setAttribute("type", "button");
+    btnRemover.value = i;
+    btnRemover.innerHTML = "Remover Produto";
+    btnRemover.addEventListener('click', function () {
         removerProduto(this);
     });
 
-    document.getElementsByClassName('btn-edit-produto')[i].addEventListener('click', function () {
+    var btnEditar = document.createElement("button");
+    btnEditar.setAttribute("class", "ml-1 btn btn-primary btn-edit-produto");
+    btnEditar.setAttribute("type", "button");
+    btnEditar.value = i;
+    btnEditar.innerHTML = "Editar Produto";
+    btnEditar.addEventListener('click', function () {
         editarProduto(this);
     });
+
+    table.append($('<tr>')
+        .append($('<td>').append(detail.nome))
+        .append($('<td>').append(detail.quantidade))
+        .append($('<td>').append("R$ " + detail.preco))
+        .append($('<td>')
+            .append(btnRemover).append(btnEditar)
+            .append(iptDetailId).append(iptMasterId).append(iptProdutoId).append(iptQtd).append(iptPreco))
+    );
 }
