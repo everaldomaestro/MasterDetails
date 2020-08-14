@@ -42,12 +42,16 @@ adicionarProduto = () => {
                 }
             }
         })
+
+        limparInputs();
     }
     else {
-        alert('Selecione o produto');
-    }
-
-    limparInputs();
+        swal({
+            title: "Atenção!",
+            text: "Produto e Qtd obrigatórios",
+            icon: "error"
+        });
+    }    
 }
 
 recriarTabela = () => {
