@@ -22,26 +22,23 @@ adicionarProduto = () => {
 
                 if (index != null && index != '' && index >= 0) {
                     //Editar
-                    let detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado, total: (produto.preco * qtd) };
+                    var detail = { detailId: detailId, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado, total: (produto.preco * qtd) };
                     details.splice(index, 1);
                     details.splice(index, 0, detail);
 
-                    table.empty();
-                    countItens = 0;
-
-                    $.each(details, function (i, detail) {
-                        appendTable(i, detail);
-                        countItens++;
+                    $.when(recriarTabela()).done(function () {
+                        totalDetails();
                     });
 
                     $('.btn-add-produto').text('Adicionar Produto');
-
                 } else {
                     //Adicionar
-                    let detail = { detailId: 0, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado, total: (produto.preco * qtd) };
+                    var detail = { detailId: 0, masterId: _masterId, produtoId: produto.produtoId, nome: produto.nome, quantidade: qtd, preco: produto.precoFormatado, total: (produto.preco * qtd) };
                     details.push(detail);
-                    appendTable(countItens, detail);
-                    countItens++;
+
+                    $.when(appendTable(countItens, detail)).done(function () {
+                        totalDetails();
+                    });
                 }
             }
         })
@@ -51,34 +48,28 @@ adicionarProduto = () => {
     }
 
     limparInputs();
-
-    setTimeout(function () {
-        totalDetails();
-    }, 100);
 }
 
-removerProduto = (e) => {
-    var index = e.value;
-
-    details.splice(index, 1);
+recriarTabela = () => {
     table.empty();
-    countItens = 0;
+    countItens = 0; 
 
     $.each(details, function (i, detail) {
         appendTable(i, detail);
-        countItens++;
     });
+}
 
+removerProduto = (e) => {
+    details.splice(e.value, 1);
+    recriarTabela();
     limparInputs();
     totalDetails();
 }
 
 editarProduto = (e) => {
-    var index = e.value;
+    var detailEdit = details[e.value];
 
-    var detailEdit = details[index];
-
-    $('#Index').val(index);
+    $('#Index').val(e.value);
     $('#DetailId').val(detailEdit.detailId);
     $('#ProdutoId').val(detailEdit.produtoId);
     $('#Qtd').val(detailEdit.quantidade);
@@ -136,6 +127,7 @@ appendTable = (i, detail) => {
         "</td></tr>";
 
     table.append(row);
+    countItens++;
 
     document.getElementsByClassName('btn-rm-produto')[i].addEventListener('click', function () {
         removerProduto(this);
